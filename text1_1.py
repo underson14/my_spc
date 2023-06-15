@@ -15,9 +15,9 @@ import random
 import numpy as np
 
 json_files = [
-    "/Volumes/Arquivos/Codigo/Contador/config1.json",
-    "/Volumes/Arquivos/Codigo/Contador/config2.json",
-    "/Volumes/Arquivos/Codigo/Contador/config.json",
+    "/content/config.json",
+    "/content/config1.json",
+    "/content/config2.json",
 ]
 
 # Escolha aleatória de um arquivo .json
@@ -35,7 +35,7 @@ client_credentials_manager = SpotifyClientCredentials(client_id=client_id, clien
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 try:
-    os.remove("/Volumes/Arquivos/Codigo/temp/.cache")
+    os.remove("/content/.cache")
     # print("Arquivo .cache removido com sucesso!")
 except FileNotFoundError:
     None
@@ -49,9 +49,9 @@ def run_subprocess(script, *args):
     process = subprocess.run(["python", script] + list(args), capture_output=True)
     return process.returncode
 
-A1 = "/Volumes/Arquivos/Codigo/Contador/text1.py"
-A2 = "/Volumes/Arquivos/Codigo/Contador/text2.py"
-A3 = "/Volumes/Arquivos/Codigo/Contador/text3.py"
+A1 = "/content/my_spc/text1.py"
+A2 = "/content/my_spc/text2.py"
+A3 = "/content/my_spc/text3.py"
 
 
 scripts = [A1,A2,A3]
@@ -86,7 +86,7 @@ def get_track_info_from_playlist(url):
     # Trata o nome da playlist para que seja um nome de arquivo válido (remove caracteres especiais e espaços)
     valid_filename = "".join(c for c in playlist_name if c.isalnum() or c in (" ", ".")).rstrip()
 
-    csv_file_path = (f"/Volumes/Arquivos/Codigo/csv/Play_Count/{valid_filename} - Playcounty.csv")
+    csv_file_path = (f"/content/{valid_filename} - Playcounty.csv")
 
     print(f"Exportanto a playlist {valid_filename} - Playcounty")
 
@@ -207,9 +207,9 @@ def get_track_info_from_playlist(url):
                 release_date_string = release_date.strftime("%Y-%m-%d")
 
                 try:
-                    os.remove("/Volumes/Arquivos/Codigo/Contador/auth.json")
-                    os.remove("/Volumes/Arquivos/Codigo/Contador/auth1.json")
-                    os.remove("/Volumes/Arquivos/Codigo/Contador/auth2.json")
+                    os.remove("/content/auth.json")
+                    os.remove("/content/auth1.json")
+                    os.remove("/content/auth2.json")
                 except FileNotFoundError:
                     None
 
@@ -261,11 +261,11 @@ def get_track_info_from_playlist(url):
                     returncode = run_subprocess(scripts[i], *args)
                     if returncode == 0:
                         with open(
-                            "/Volumes/Arquivos/Codigo/temp/fmt_playcount.txt", "r"
+                            "/content/fmt_playcount.txt", "r"
                         ) as file:
                             fmt_playcount = int(file.read())
                             formatted_fmt_playcount = f"{fmt_playcount:010d}"
-                        os.remove("/Volumes/Arquivos/Codigo/temp/fmt_playcount.txt")
+                        os.remove("/content/fmt_playcount.txt")
                         break
                     elif i < len(scripts) - 1:  # Não é o último script na lista
                         print(
@@ -350,9 +350,9 @@ def get_track_info_from_playlist(url):
                 )
 
                 try:
-                    os.remove("/Volumes/Arquivos/Codigo/Contador/auth.json")
-                    os.remove("/Volumes/Arquivos/Codigo/Contador/auth1.json")
-                    os.remove("/Volumes/Arquivos/Codigo/Contador/auth2.json")
+                    os.remove("/content/auth.json")
+                    os.remove("/content/auth1.json")
+                    os.remove("/content/auth2.json")
                 except FileNotFoundError:
                     None
             tqdm.write(f"Total Tracks: {total_tracks}")
