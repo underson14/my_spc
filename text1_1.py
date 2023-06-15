@@ -51,7 +51,7 @@ except FileNotFoundError:
     None
 
 Path.cwd()
-os.chdir("/content/temp")
+os.chdir("/content/")
 Path.cwd()
 
 # Lista com os caminhos dos scripts
