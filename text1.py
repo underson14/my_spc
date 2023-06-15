@@ -211,7 +211,8 @@ for artist in artists:
 
                 if args.track and args.track not in track['uri']:
                     continue
-
+                if args.track_name and args.track_name.lower() not in track['name'].lower():
+                    continue
                 if ((not args.no_skip) and
                         (track['uri'] in seen_tracks or track['playcount'] in playcounts)):
                     continue
