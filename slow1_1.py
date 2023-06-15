@@ -274,7 +274,7 @@ def get_track_info_from_playlist(url):
                 # Definir os argumentos para a chamada do subprocesso
                 args = (
                     artist_id,
-                    "-t",
+                    "-tn",
                     track_name,
                     
                 )
