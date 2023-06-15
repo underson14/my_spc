@@ -167,8 +167,6 @@ def get_track_info_from_playlist(url):
                 artist_names_string = "; ".join(artist_names)
 
                 track_name = track_info["name"]
-                track_name = track_name.replace(" - ", " ")
-
                 track_uri = track_info["uri"]
                 track_id = track_info["id"]
                 explicit = track_info["explicit"]
