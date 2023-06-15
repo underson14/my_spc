@@ -1,0 +1,17 @@
+spotipy
+json
+re
+subprocess
+time
+os
+csv
+sys
+datetime
+pathlib
+tqdm
+random
+numpy
+argparse
+colorama
+requests
+termcolor
