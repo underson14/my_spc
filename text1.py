@@ -78,7 +78,7 @@ def get_access_token():
 
     session.headers['Authorization'] = f'Bearer {data["access_token"]}'
 
-    with open('/Volumes/Arquivos/Codigo/Contador/auth.json', 'w') as fd:
+    with open('/content/auth.json', 'w') as fd:
         json.dump(data, fd)
 
 
