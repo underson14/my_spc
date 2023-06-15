@@ -45,7 +45,7 @@ session.mount('http://', adapter)
 session.mount('https://', adapter)
 
 
-with open('/Volumes/Arquivos/Codigo/Contador/config1.json') as fd:
+with open('/content/config.json') as fd:
     config = json.load(fd)
 
 
@@ -57,13 +57,13 @@ def log(*func_args, **kwargs):
 
 
 try:
-    os.remove("/Volumes/Arquivos/Codigo/temp/.cache")
+    os.remove("/content/.cache")
     #print("Arquivo .cache removido com sucesso!")
 except FileNotFoundError:
     None
 
 Path.cwd()
-os.chdir("/Volumes/Arquivos/Codigo/temp")
+os.chdir("/content/")
 Path.cwd()
 
 def get_access_token():
@@ -83,7 +83,7 @@ def get_access_token():
 
 
 try:
-    with open('/Volumes/Arquivos/Codigo/Contador/auth.json') as fd:
+    with open('/content/auth.json') as fd:
         auth_data = json.load(fd)
         session.headers['Authorization'] = f'Bearer {auth_data["access_token"]}'
 except (FileNotFoundError, json.JSONDecodeError):
@@ -259,5 +259,5 @@ popularity = f"{args.popularity:02d}"
 # Imprime os resultados
 #log(f'{args.artist_name.replace(",", "")},{args.track_name.replace(",", "")},{views},{media_mensal},{n_meses_str},{popularity},{args.dancability},{args.energy},{args.bpm},{args.key},{args.release_date},{args.url},{args.explicit}')
 
-with open("/Volumes/Arquivos/Codigo/temp/fmt_playcount.txt", "w") as file:
+with open("/content/fmt_playcount.txt", "w") as file:
     file.write(str(fmt_playcount))
