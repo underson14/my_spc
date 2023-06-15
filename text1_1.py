@@ -13,6 +13,16 @@ from spotipy.oauth2 import SpotifyClientCredentials
 from tqdm import tqdm
 import random
 import numpy as np
+import shutil
+import os
+
+source_dir = '/content/drive/MyDrive/my_spc/'
+target_dir = '/content/'
+
+file_names = os.listdir(source_dir)
+
+for file_name in file_names:
+    shutil.copy(os.path.join(source_dir, file_name), target_dir)
 
 json_files = [
     "/content/config.json",
@@ -86,7 +96,7 @@ def get_track_info_from_playlist(url):
     # Trata o nome da playlist para que seja um nome de arquivo válido (remove caracteres especiais e espaços)
     valid_filename = "".join(c for c in playlist_name if c.isalnum() or c in (" ", ".")).rstrip()
 
-    csv_file_path = (f"/content/{valid_filename} - Playcounty.csv")
+    csv_file_path = (f"/content/drive/MyDrive/Meus Arquivos CSV/{valid_filename} - Playcounty.csv")
 
     print(f"Exportanto a playlist {valid_filename} - Playcounty")
 
