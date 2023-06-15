@@ -19,6 +19,7 @@ parser.add_argument('artist', nargs='*', help='Spotify ID of the artists(s)')
 parser.add_argument('-s', '--search', default=[], action='append', help='artist name(s) to search for')
 parser.add_argument('-a', '--album', help='search for specific album(s) only')
 parser.add_argument('-t', '--track', help='search for specific track(s) only')
+parser.add_argument('-tn', '--track_name',)
 parser.add_argument('-c', '--country', help='country code to retrieve results from')
 parser.add_argument('--types', type=lambda x: x.split(','), default=['album', 'single', 'compilation'])  # album, single, compilation
 parser.add_argument('--features', action='store_true', help='include albums where the artist is featured')
@@ -175,9 +176,10 @@ for artist in artists:
                         any(x for x in track['artists'] if x['uri'] == f'spotify:artist:{artist}')):
                     continue
 
-                #if args.track and args.track not in track['uri']:
-                    #continue
-                if args.track and args.track not in track['name']:
+                if args.track and args.track not in track['uri']:
+                    continue
+                if args.track_name and args.track_name.lower() not in track['name'].lower():
+
                     continue
 
                 if ((not args.no_skip) and
