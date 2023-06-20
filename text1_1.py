@@ -25,9 +25,9 @@ for file_name in file_names:
     shutil.copy(os.path.join(source_dir, file_name), target_dir)
 
 json_files = [
-    "/content/config.json",
     "/content/config1.json",
     "/content/config2.json",
+    "/content/config3.json",
 ]
 
 # Escolha aleatória de um arquivo .json
