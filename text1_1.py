@@ -114,19 +114,15 @@ def get_track_info_from_playlist(url):
                 break
 
             # Para cada música na playlist
-            for i, item in enumerate(tqdm(tracks, total=total_tracks, initial=1, bar_format='{l_bar}{bar}{r_bar}')):
-
-                total_tracks += 1
-                indice1 = i+1
-
+            for i, item in enumerate(tracks, start=0):
+                indice1 = i + 1
+                
                 # Extrair as informações da faixa
                 track_info = item["track"]
                 track_id = track_info["id"]  # Id da faixa
 
                 # Obter as características de áudio para essa faixa
-                audio_features = sp.audio_features([track_id])[
-                    0
-                ]  # Lembre-se de passar o ID da faixa como uma lista
+                audio_features = sp.audio_features([track_id])[0]  # Lembre-se de passar o ID da faixa como uma lista
                 artist_id = track_info["artists"][0]["id"]
                 artists = track_info["artists"]
 
@@ -141,8 +137,7 @@ def get_track_info_from_playlist(url):
                 artist_names_string = "; ".join(artist_names)
 
                 track_name = track_info["name"]
-                track_name = track_name.replace(" - ", " ")
-
+                quoted_track_name = f'"{track_name}"' 
                 track_uri = track_info["uri"]
                 track_id = track_info["id"]
                 explicit = track_info["explicit"]
@@ -154,7 +149,9 @@ def get_track_info_from_playlist(url):
                     resposta = "Sem Palavrão"
                 album_name = track_info["album"]["name"]
                 album_uri = track_info["album"]["uri"]
-                album_id = track_info["album"]["id"]  # Aqui adicionamos a informação sobre o álbum
+                album_id = track_info["album"]["id"] 
+                album_type = track_info["album"]["type"] 
+                quoted_album_type = f'"{album_type}"' 
                 popularity = track_info["popularity"]
                 popularity = round(popularity / 10)
                 popularity = 1 if popularity == 0 else popularity
@@ -224,46 +221,20 @@ def get_track_info_from_playlist(url):
                     None
 
                 # Selecionar o script baseado no índice atual
-                index = total_tracks % len(scripts)
+                index = i % len(scripts)
 
                 # Obter o caminho do script a ser executado
                 script = scripts[index]
 
-                # print(f'{total_tracks}')  # Exibindo a contagem total de músicas
-
-                # ...
-                # Selecionar o script baseado no índice atual
-                index = total_tracks % len(scripts)
 
                 # Definir os argumentos para a chamada do subprocesso
                 args = (
                     artist_id,
-                    "-t",
-                    track_id,
                     "-a",
                     album_uri,
-                    "-an",
-                    artist_names_string,
-                    "-tn",
-                    track_name,
-                    "-rd",
-                    release_date_string,
-                    "-ma",
-                    semanas_age_string,
-                    "-u",
-                    track_url,
-                    "-p",
-                    formatted_popularity,
-                    "-e",
-                    formatted_energy,
-                    "-d",
-                    formatted_danceability,
-                    "-b",
-                    bpm_string,
-                    "-k",
-                    camelot_key,
-                    "-ex",
-                    resposta,
+                    "-t",
+                    track_uri,
+                    "--features",
                 )
 
                 # ...
@@ -278,9 +249,7 @@ def get_track_info_from_playlist(url):
                         os.remove("/content/fmt_playcount.txt")
                         break
                     elif i < len(scripts) - 1:  # Não é o último script na lista
-                        print(
-                            f"Subprocess failed with return code {returncode}, trying next script"
-                        )
+                        continue
                     else:  # É o último script na lista
                         print(f"All subprocesses failed with return code {returncode}")
                 # ...
@@ -323,6 +292,8 @@ def get_track_info_from_playlist(url):
 
                 print(
                     indice1,
+                    "/",
+                    total_tracks,
                     "-",
                     artist_names_string,
                     "-",
@@ -331,12 +302,9 @@ def get_track_info_from_playlist(url):
                     formatted_fmt_playcount1,
                     "views",
                     "-",
-                    "Popularidade",
+                    "Pop",
                     scaled_value,
-                    "-",
-                    "Lançamento",
-                    release_year,
-                    script.split("/")[-1],
+
                 )
 
                 writer.writerow(
