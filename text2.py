@@ -22,7 +22,7 @@ parser.add_argument('-s', '--search', default=[], action='append', help='artist 
 parser.add_argument('-a', '--album', help='search for specific album(s) only')
 parser.add_argument('-t', '--track', help='search for specific track(s) only')
 parser.add_argument('-c', '--country', help='country code to retrieve results from')
-parser.add_argument('--types', type=lambda x: x.split(','), default=['album', 'single'])  # album, single, compilation
+parser.add_argument('--types', type=lambda x: x.split(','), default=['album', 'single', 'compilation'])  # album, single, compilation
 parser.add_argument('--features', action='store_true', help='include albums where the artist is featured')
 parser.add_argument('--no-skip', action='store_true', help='do not skip duplicate songs')
 parser.add_argument('-an', '--artist_name',)
@@ -45,7 +45,7 @@ session.mount('http://', adapter)
 session.mount('https://', adapter)
 
 
-with open('/content/config1.json') as fd:
+with open('/content/config2.json') as fd:
     config = json.load(fd)
 
 
@@ -63,7 +63,7 @@ except FileNotFoundError:
     None
 
 Path.cwd()
-os.chdir("/content/")
+os.chdir("/Volumes/Arquivos/Codigo/temp")
 Path.cwd()
 
 def get_access_token():
@@ -185,7 +185,6 @@ for artist in artists:
             continue
 
         if args.album and args.album not in album['uri']:
-
             continue
 
         seen_albums.add(album['id'])
@@ -211,10 +210,9 @@ for artist in artists:
 
                 if args.track and args.track not in track['uri']:
                     continue
+                
                 if args.track_name and args.track_name.lower() not in track['name'].lower():
-                    continue
-                if ((not args.no_skip) and
-                        (track['uri'] in seen_tracks or track['playcount'] in playcounts)):
+
                     continue
 
                 track_uri = track['uri']
@@ -225,7 +223,7 @@ for artist in artists:
                 if args.artist_name and args.track_name and args.release_date:
                     fmt_playcount = '{:,d}'.format(track['playcount'])
                     color_playcount = colored(fmt_playcount, 'yellow', attrs=['bold'])
-                #log(f'* {track["name"]}: {color_playcount}')
+                log(f'* {track["name"]}: {color_playcount}')
 
                 artist_playcount += track['playcount']
                 album_playcount += track['playcount']
@@ -233,7 +231,7 @@ for artist in artists:
         if album_playcount:
             fmt_playcount = '{:,d}'.format(album_playcount)
             color_playcount = colored(fmt_playcount, 'red', attrs=['bold'])
-            #log(f'Total: {color_playcount}', attrs=['bold'])
+            log(f'Total: {color_playcount}', attrs=['bold'])
         else:
             None #log('No new songs found on album', attrs=['bold'])
 
@@ -242,23 +240,8 @@ for artist in artists:
 # Atribui a contagem de reproduções do artista a fmt_playcount
 fmt_playcount = artist_playcount
 
-fmt_playcount = int(fmt_playcount)
-
-global views
-views = fmt_playcount
-
-n_meses = int(args.month_age) 
-
-media_mensal = round(fmt_playcount / n_meses) if n_meses > 0 else fmt_playcount
-
-n_meses_str = str(n_meses)
-
-args.popularity = int(args.popularity)
-
-popularity = f"{args.popularity:02d}" 
-
 # Imprime os resultados
-#log(f'{args.artist_name.replace(",", "")},{args.track_name.replace(",", "")},{views},{media_mensal},{n_meses_str},{popularity},{args.dancability},{args.energy},{args.bpm},{args.key},{args.release_date},{args.url},{args.explicit}')
+log(f'{args.track_name},{fmt_playcount}')
 
 with open("/content/fmt_playcount.txt", "w") as file:
     file.write(str(fmt_playcount))
